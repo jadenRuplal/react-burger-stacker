@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import IngredientList from './IngredientList'
 import BurgerPane from './BurgerPane'
 
-class BurgerStacker extends Component {
-	state = {
-		ingredients: [
+const BurgerStacker = () => {
+	// state = {
+	const	ingredients = [
 			{ name: 'Kaiser Bun', color: 'saddlebrown' },
 			{ name: 'Sesame Bun', color: 'sandybrown' },
 			{ name: 'Gluten Free Bun', color: 'peru' },
@@ -17,47 +17,46 @@ class BurgerStacker extends Component {
 			{ name: 'Tomato', color: 'tomato' },
 			{ name: 'Bacon', color: 'maroon' },
 			{ name: 'Onion', color: 'lightyellow' },
-		],
-		burgerIngredients: [],
-	}
+		]
+
+    const [burgerIngredients, setburgerIngredients] = useState([])
+	
 
 	// add to the burger
-	addToStack = (e) => {
+	const addToStack = (e) => {
 		const ingColor = e.target.style.backgroundColor
 		const ingName = e.target.innerText
-		this.setState({
-			burgerIngredients: [
-				{ name: ingName, color: ingColor },
-				...this.state.burgerIngredients,
-			],
-		})
+		setburgerIngredients(
+            [{ name: ingName, color: ingColor },
+				...burgerIngredients,
+            ])
 	}
 
 	// remove from burger
-    removeFromStack = (e) => {
+    const removeFromStack = (e) => {
         const clickIndex = e.target.id
-        const currBurger = this.state.burgerIngredients.slice()
+        const currBurger = burgerIngredients.slice()
         currBurger.splice(clickIndex, 1)
-        this.setState({burgerIngredients: currBurger})
+        setburgerIngredients(currBurger)
     }
 
 	// clear burger
-    clearBurger = () => {
-        this.setState({ burgerIngredients: [] })
+   const clearBurger = () => {
+        setburgerIngredients( [] )
     }
 
 
-	render() {
+	
 		return (
 			<>
 				<IngredientList
-					ingredients={this.state.ingredients}
-					add={this.addToStack}
+					ingredients={ingredients}
+					add={addToStack}
 				/>
-				<BurgerPane ingredients={this.state.burgerIngredients} remove={this.removeFromStack} clear={this.clearBurger}/>
+				<BurgerPane ingredients={burgerIngredients} remove={removeFromStack} clear={clearBurger}/>
 			</>
 		)
 	}
-}
+
 
 export default BurgerStacker
